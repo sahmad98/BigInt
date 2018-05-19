@@ -8,6 +8,7 @@
 #define BIG_INT_UTILITY_FUNCTIONS_HPP
 
 #include <tuple>
+#include <vector>
 
 
 /*
@@ -108,6 +109,32 @@ bool is_power_of_10(const std::string& num){
             return false;
 
     return true;    // first digit is 1 and the following digits are all 0
+}
+
+/*
+    convert_to_base_64
+    ----------------------
+    Converts a unsigned string-represented integer into a base 64 vector of
+    magnitude
+*/
+
+std::vector<unsigned long long> convert_to_base_64(std::string& num) {
+    std::vector<unsigned long long> magnitude;
+    auto start_index = num.size() - 1;  // From backward direction
+    auto stop_index = num.size();
+    uint64_t component = 0;
+    while(start_index != -1) {
+        try {
+            std::string num_slice = num.substr(start_index, stop_index);
+            component = std::stoull(num_slice);
+        } catch (std::out_of_range& e) {
+            magnitude.push_back(component);
+            stop_index = start_index + 1;
+        }
+        --start_index;
+    }
+    magnitude.push_back(component);
+    return magnitude;
 }
 
 #endif  // BIG_INT_UTILITY_FUNCTIONS_HPP
